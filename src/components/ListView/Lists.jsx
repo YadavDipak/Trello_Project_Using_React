@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { getCards, createCards, deleteList } from "../services/FetchApi";
+import { getCards, createCards, deleteList } from "../../services/FetchApi";
 import Cards from "../CardView/Cards";
 import DialogBox from "../DialogBox";
 import {
