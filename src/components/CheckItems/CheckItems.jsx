@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Box, Checkbox } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import IconButton from "@mui/material/IconButton";
-import { changeItemCheckbox, deleteCheckItem } from "../services/FetchApi";
+import { changeItemCheckbox, deleteCheckItem } from "../../services/FetchApi";
 
 function CheckItems({
   checkItem,
