@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import {
   Button,
   Box,
 } from "@mui/material";
 import Boards from "./Boards";
-import { getAllBoard, createBoard } from "../services/FetchApi";
+import { getAllBoard, createBoard } from "../../services/FetchApi";
 import DialogBox from "../DialogBox";
 
 function Content() {
