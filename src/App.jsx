@@ -1,7 +1,7 @@
 import { Navigate, Route, Routes } from 'react-router-dom'
-import Content from './component/HomePage/Content'
-import NavBar from './component/NavBar'
-import BoardInfo from './component/BoardView/BoardInfo'
+import Content from './components/HomePage/Content'
+import NavBar from './components/NavBar'
+import BoardInfo from './components/BoardView/BoardInfo'
 
 function App() {
   return (
