@@ -11,7 +11,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import PropTypes from "prop-types";
 import CheckItems from "../CheckItems/CheckItems";
 import PopOver from "../PopOver";
-import { deleteCheckList, getCheckItems, createCheckItem } from "../services/FetchApi";
+import { deleteCheckList, getCheckItems, createCheckItem } from "../../services/FetchApi";
 import LinearProgressWithLabel from '../Progress'
 
 
