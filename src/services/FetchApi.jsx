@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 import axios from "axios";
 
 const keyValue = import.meta.env.VITE_TRELLO_API_KEY;
