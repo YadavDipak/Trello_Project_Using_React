@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import CloseIcon from "@mui/icons-material/Close";
-import { deleteCard, getCheckList, createCheckList } from "../services/FetchApi";
+import { deleteCard, getCheckList, createCheckList } from "../../services/FetchApi";
 import CheckList from "../CheckList/CheckList";
 import PopOver from "../PopOver";
 import DeleteDialog from "../DeleteDialog";
