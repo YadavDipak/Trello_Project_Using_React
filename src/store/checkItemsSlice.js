@@ -4,6 +4,7 @@ import {
   createCheckItem,
   deleteCheckItem,
   changeItemCheckbox,
+  deleteCheckList,
 } from "../services/FetchApi";
 
 // Async Thunks
