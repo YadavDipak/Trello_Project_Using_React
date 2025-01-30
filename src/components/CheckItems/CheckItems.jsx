@@ -1,68 +1,60 @@
-import { useState, useEffect } from "react";
-import { Box, Checkbox } from "@mui/material";
+import React, { useState } from "react";
+import { Box, Checkbox, IconButton } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
-import IconButton from "@mui/material/IconButton";
-import { changeItemCheckbox, deleteCheckItem } from "../../services/FetchApi";
+import { useDispatch } from "react-redux";
+import { removeCheckItem, updateCheckItem } from "../../store/checkItemsSlice";
 
-function CheckItems({
-  checkItem,
-  handleCheckChange,
-  handleDeleteCheckItem,
-  cardObj,
-}) {
+function CheckItems({ checkItem, cardObj }) {
+  const dispatch = useDispatch();
+  const [checkedState, setCheckedState] = useState(
+    checkItem.state === "complete"
+  );
 
-  const [checkedState, setCheckedState] = useState(null);
-
-  useEffect(() => {
-    setCheckedState(checkItem.state === "complete");
-  }, []);
-
-  function handleDelete() {
-    console.log(checkItem);
-    const checkItemId = checkItem.id;
-    deleteCheckItem(checkItem.idChecklist, checkItemId)
-      .then(() => {
-        handleDeleteCheckItem(checkItemId);
+  const handleDelete = () => {
+    dispatch(
+      removeCheckItem({
+        checkListId: checkItem.idChecklist,
+        idCheckItem: checkItem.id,
       })
-      .catch((err) => console.log(err));
-  }
+    );
+  };
 
-  function handleCheckChangeLocal() {
+  const handleCheckChangeLocal = () => {
     const newCheckState = !checkedState;
     const checkState = newCheckState ? "complete" : "incomplete";
     setCheckedState(newCheckState);
-    changeItemCheckbox(cardObj.id, checkItem.id, checkState)
-      .then(() => {
-        handleCheckChange(checkItem.id, checkState);
+    dispatch(
+      updateCheckItem({
+        cardId: cardObj.id,
+        checkItemId: checkItem.id,
+        newState: checkState,
       })
-      .catch((err) => console.log(err));
-  }
+    );
+  };
 
   return (
-    <>
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          width: "100%",
-          alignItems: "center",
-          fontFamily: "sans-serif",
-        }}
-      >
-        <Box>
-          <Checkbox
-            fontSize="inherit"
-            checked={checkedState}
-            color="default"
-            onChange={handleCheckChangeLocal}
-          />
-          {checkItem.name}
-        </Box>
-        <IconButton aria-label="delete" onClick={handleDelete}>
-          <DeleteIcon fontSize="inherit" />
-        </IconButton>
+    <Box
+      sx={{
+        display: "flex",
+        justifyContent: "space-between",
+        width: "100%",
+        alignItems: "center",
+        fontFamily: "sans-serif",
+      }}
+    >
+      <Box>
+        <Checkbox
+          fontSize="inherit"
+          checked={checkedState}
+          color="default"
+          onChange={handleCheckChangeLocal}
+        />
+        {checkItem.name}
       </Box>
-    </>
+      <IconButton aria-label="delete" onClick={handleDelete}>
+        <DeleteIcon fontSize="inherit" />
+      </IconButton>
+    </Box>
   );
 }
 

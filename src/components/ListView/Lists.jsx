@@ -1,61 +1,40 @@
 import React, { useState, useEffect } from "react";
-import IconButton from "@mui/material/IconButton";
+import { Box, Card, Button, IconButton } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { getCards, createCards, deleteList } from "../../services/FetchApi";
+import { useDispatch, useSelector } from "react-redux";
 import Cards from "../CardView/Cards";
 import DialogBox from "../DialogBox";
-import {
-  Box,
-  Card,
-  Button,
-} from "@mui/material";
 import DeleteDialog from "../DeleteDialog";
+import { fetchCards, addCard, removeList } from "../../store/cardsSlice";
 
-
-function Lists({ listInfo, handleListChange }) {
-  const [cardsData, setCards] = useState([]);
+function Lists({ listInfo }) {
+  const dispatch = useDispatch();
+  const { cards, status } = useSelector((state) => state.cards);
   const [open, setOpen] = useState(false);
   const [cardName, setCardName] = useState("");
   const [delOpen, setDelOpen] = useState(false);
+
+  useEffect(() => {
+    dispatch(fetchCards(listInfo.id));
+  }, [dispatch, listInfo.id]);
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
   const handleDelOpen = () => setDelOpen(true);
-
   const handleDelClose = () => setDelOpen(false);
-
-  useEffect(() => {
-    getCards(listInfo.id)
-      .then((data) => {
-        setCards(data);
-      })
-      .catch((err) => console.log(err));
-  }, [listInfo.id]);
 
   const handleCreateCard = (e) => {
     e.preventDefault();
-    createCards(cardName, listInfo.id)
-      .then((newCard) => {
-        setCards([...cardsData, newCard]);
-        setCardName("");
-        handleClose();
-      })
-      .catch((err) => console.log(err));
+    dispatch(addCard({ cardName, listId: listInfo.id }));
+    setCardName("");
+    handleClose();
   };
 
   const handleListDelete = () => {
+    dispatch(removeList(listInfo.id));
     handleDelClose();
-    deleteList(listInfo.id).then((data) => {
-      handleListChange(data);
-    });
   };
-
-  function setCardsData(id) {
-    let results = cardsData.filter((cards) => cards.id !== id);
-    // console.log(results);
-    setCards(results);
-  }
 
   const handleTextValue = (e) => {
     setCardName(e.target.value);
@@ -64,14 +43,13 @@ function Lists({ listInfo, handleListChange }) {
   return (
     <>
       <Card
-        key={listInfo}
         variant="outlined"
         sx={{
           bgcolor: "#ADD8E6",
           fontFamily: "sans-serif",
           m: 2,
           height: "fit-content",
-          minWidth: "20vw"
+          minWidth: "20vw",
         }}
       >
         <Box
@@ -90,9 +68,13 @@ function Lists({ listInfo, handleListChange }) {
           </IconButton>
         </Box>
 
-        {cardsData.map((card) => (
-          <Cards handleCards={setCardsData} cardInfo={card} />
-        ))}
+        {status === "loading" ? (
+          <Box>Loading Cards...</Box>
+        ) : cards.length > 0 ? (
+          cards.map((card) => <Cards key={card.id} cardInfo={card} />)
+        ) : (
+          <Box>No Cards Found</Box>
+        )}
 
         <Button
           onClick={handleOpen}
@@ -112,8 +94,12 @@ function Lists({ listInfo, handleListChange }) {
         textChange={handleTextValue}
       />
 
-      <DeleteDialog handleclose={handleDelClose} open={delOpen} title={"  Delete List"} deleteitem={handleListDelete} />
-
+      <DeleteDialog
+        handleclose={handleDelClose}
+        open={delOpen}
+        title="Delete List"
+        deleteitem={handleListDelete}
+      />
     </>
   );
 }

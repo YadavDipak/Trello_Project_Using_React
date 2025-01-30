@@ -1,7 +1,7 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
-  Button,
   Box,
+  Button,
   Dialog,
   IconButton,
   DialogTitle,
@@ -10,25 +10,27 @@ import {
 } from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import CloseIcon from "@mui/icons-material/Close";
-import { deleteCard, getCheckList, createCheckList } from "../../services/FetchApi";
+import { useDispatch, useSelector } from "react-redux";
 import CheckList from "../CheckList/CheckList";
 import PopOver from "../PopOver";
 import DeleteDialog from "../DeleteDialog";
+import {
+  fetchCheckLists,
+  addCheckList,
+  removeCard,
+} from "../../store/checklistsSlice";
 
-function Cards({ cardInfo, handleCards }) {
+function Cards({ cardInfo }) {
+  const dispatch = useDispatch();
+  const { checklists, status } = useSelector((state) => state.checklists);
   const [delCard, setDelCard] = useState(false);
-  const [checkLists, setAllCheckList] = useState([]);
   const [openChecklists, setOpenChecklists] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const [checkListName, setCheckListName] = useState("");
 
   useEffect(() => {
-    getCheckList(cardInfo.id)
-      .then((data) => {
-        setAllCheckList(data);
-      })
-      .catch((err) => console.log(err));
-  }, [cardInfo.id]);
+    dispatch(fetchCheckLists(cardInfo.id));
+  }, [dispatch, cardInfo.id]);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -44,14 +46,9 @@ function Cards({ cardInfo, handleCards }) {
 
   const handleCheckList = (e) => {
     e.preventDefault();
-
-    createCheckList(cardInfo.id, checkListName)
-      .then((data) => {
-        handleNewCheckList(data);
-        setCheckListName("");
-        handleClose();
-      })
-      .catch((err) => console.log(err));
+    dispatch(addCheckList({ cardId: cardInfo.id, checkListName }));
+    setCheckListName("");
+    handleClose();
   };
 
   const open = Boolean(anchorEl);
@@ -68,19 +65,8 @@ function Cards({ cardInfo, handleCards }) {
   const handleDelClose = () => setDelCard(false);
 
   const handleDeleteCard = () => {
+    dispatch(removeCard(cardInfo.id));
     handleDelClose();
-    const id = cardInfo.id;
-    deleteCard(id);
-    handleCards(id);
-  };
-
-  const handleNewCheckList = (data) => {
-    setAllCheckList([...checkLists, data]);
-  };
-
-  const handleDeleteCheckList = (id) => {
-    const newCheckList = checkLists.filter((checkList) => checkList.id !== id);
-    setAllCheckList(newCheckList);
   };
 
   return (
@@ -112,14 +98,22 @@ function Cards({ cardInfo, handleCards }) {
         </IconButton>
       </Box>
 
-      <DeleteDialog handleclose={handleDelClose} open={delCard} title={"  Delete Card"} deleteitem={handleDeleteCard} />
+      <DeleteDialog
+        handleclose={handleDelClose}
+        open={delCard}
+        title="Delete Card"
+        deleteitem={handleDeleteCard}
+      />
 
       <Dialog
         onClose={handleCheckListClose}
         aria-labelledby="customized-dialog-title"
         open={openChecklists}
       >
-        <DialogTitle sx={{ m: 0, p: 2, width: "38vw" }} id="customized-dialog-title">
+        <DialogTitle
+          sx={{ m: 0, p: 2, width: "38vw" }}
+          id="customized-dialog-title"
+        >
           {cardInfo.name}
         </DialogTitle>
         <IconButton
@@ -154,20 +148,25 @@ function Cards({ cardInfo, handleCards }) {
               open={open}
               anchorEl={anchorEl}
               handleClose={handleClose}
-              label={"Name"}
+              label="Name"
               handleNew={handleCheckList}
               name={checkListName}
               handleNewInput={handleCheckListBox}
             />
 
-            {checkLists.map((checkList) => (
-              <CheckList
-                key={checkList.id}
-                cardObj={cardInfo}
-                handleCheckListDelete={handleDeleteCheckList}
-                checkList={checkList}
-              />
-            ))}
+            {status === "loading" ? (
+              <Box>Loading Checklists...</Box>
+            ) : checklists.length > 0 ? (
+              checklists.map((checkList) => (
+                <CheckList
+                  key={checkList.id}
+                  cardObj={cardInfo}
+                  checkList={checkList}
+                />
+              ))
+            ) : (
+              <Box>No Checklists Found</Box>
+            )}
           </FormGroup>
         </DialogContent>
       </Dialog>

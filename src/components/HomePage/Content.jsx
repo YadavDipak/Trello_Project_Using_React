@@ -1,41 +1,26 @@
-import { useState, useEffect } from "react";
-import {
-  Button,
-  Box,
-} from "@mui/material";
+import React, { useEffect } from "react";
+import { Button, Box } from "@mui/material";
+import { useDispatch, useSelector } from "react-redux";
 import Boards from "./Boards";
-import { getAllBoard, createBoard } from "../../services/FetchApi";
 import DialogBox from "../DialogBox";
+import { fetchBoards, addBoard } from "../../store/boardsSlice";
 
 function Content() {
-  const [open, setOpen] = useState(false);
-  const [boardName, setBoard] = useState("");
-  const [allBoards, setAllBoard] = useState([]);
+  const dispatch = useDispatch();
+  const { boards, status } = useSelector((state) => state.boards);
+  const [open, setOpen] = React.useState(false);
+  const [boardName, setBoard] = React.useState("");
+
+  useEffect(() => {
+    dispatch(fetchBoards());
+  }, [dispatch]);
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  useEffect(() => {
-    getAllBoard()
-      .then((data) => {
-        setAllBoard(data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
-
-
   const handleCreateBoard = (e) => {
     e.preventDefault();
-    createBoard(boardName)
-      .then((data) => {
-        setAllBoard((prevBoards) => [...prevBoards, data]);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-
+    dispatch(addBoard(boardName));
     setBoard("");
     handleClose();
   };
@@ -46,13 +31,15 @@ function Content() {
 
   return (
     <>
-      <Box sx={{
-        display: "flex",
-        flexWrap: "wrap",
-        m: 2,
-        pt: 4,
-        fontFamily: "sans-serif",
-      }} >
+      <Box
+        sx={{
+          display: "flex",
+          flexWrap: "wrap",
+          m: 2,
+          pt: 4,
+          fontFamily: "sans-serif",
+        }}
+      >
         <Button
           onClick={handleOpen}
           variant="contained"
@@ -76,8 +63,10 @@ function Content() {
           textChange={handleChange}
         />
 
-        {allBoards.length > 0 ? (
-          allBoards.map((item) => <Boards key={item.id} boardInfo={item} />)
+        {status === "loading" ? (
+          <Box>Loading...</Box>
+        ) : boards.length > 0 ? (
+          boards.map((item) => <Boards key={item.id} boardInfo={item} />)
         ) : (
           <Box
             sx={{

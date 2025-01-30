@@ -1,39 +1,33 @@
-import React, { useEffect, useState } from "react";
-import CheckBoxIcon from "@mui/icons-material/CheckBox";
+import React, { useState, useEffect } from "react";
 import {
-  Button,
   Box,
+  Button,
   FormGroup,
   FormControlLabel,
   IconButton,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
-import PropTypes from "prop-types";
+import CheckBoxIcon from "@mui/icons-material/CheckBox";
+import { useDispatch, useSelector } from "react-redux";
 import CheckItems from "../CheckItems/CheckItems";
 import PopOver from "../PopOver";
-import { deleteCheckList, getCheckItems, createCheckItem } from "../../services/FetchApi";
-import LinearProgressWithLabel from '../Progress'
+import LinearProgressWithLabel from "../Progress";
+import {
+  fetchCheckItems,
+  addCheckItem,
+  removeCheckList,
+} from "../../store/checkItemsSlice";
 
-
-
-LinearProgressWithLabel.propTypes = {
-  value: PropTypes.number.isRequired,
-};
-
-function CheckList({ handleCheckListDelete, checkList, cardObj }) {
-  const [checkItems, setCheckItems] = useState([]);
-  const [progress, setProgress] = useState(0);
-  const [checkItemName, setCheckItemName] = useState("");
+function CheckList({ checkList, cardObj }) {
+  const dispatch = useDispatch();
+  const { checkItems, status } = useSelector((state) => state.checkItems);
   const [anchorEl, setAnchorEl] = useState(null);
+  const [checkItemName, setCheckItemName] = useState("");
+  const [progress, setProgress] = useState(0);
 
   useEffect(() => {
-    getCheckItems(checkList.id)
-      .then((data) => {
-        setCheckItems(data);
-        updateProgress(data);
-      })
-      .catch((err) => console.log(err));
-  }, []);
+    dispatch(fetchCheckItems(checkList.id));
+  }, [dispatch, checkList.id]);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -49,131 +43,104 @@ function CheckList({ handleCheckListDelete, checkList, cardObj }) {
 
   const handleCheckItem = (e) => {
     e.preventDefault();
-
-    createCheckItem(checkList.id, checkItemName)
-      .then((data) => {
-        handleNewCheckItem(data);
-        setCheckItemName("");
-        handleClose();
-      })
-      .catch((err) => console.log(err));
+    dispatch(addCheckItem({ checkListId: checkList.id, checkItemName }));
+    setCheckItemName("");
+    handleClose();
   };
 
-  const open = Boolean(anchorEl);
-  const id = open ? "simple-popover" : undefined;
+  const handleDelete = () => {
+    dispatch(removeCheckList(checkList.id));
+  };
 
   const updateProgress = (items) => {
     const totalCheckItems = items.length;
     const checkedLength = items.filter(
-      (checkItem) => checkItem.state === "complete"
+      (item) => item.state === "complete"
     ).length;
     const percentage =
       totalCheckItems === 0 ? 0 : (checkedLength / totalCheckItems) * 100;
     setProgress(percentage);
   };
 
-  const handleDelete = () => {
-    const checkListId = checkList.id;
-    deleteCheckList(checkListId)
-      .then(() => {
-        handleCheckListDelete(checkListId);
-      })
-      .catch((err) => console.log(err));
-  };
-
-  const handleNewCheckItem = (data) => {
-    const newCheckItems = [...checkItems, data];
-    setCheckItems(newCheckItems);
-    updateProgress(newCheckItems);
-  };
-
-  const handleDeleteCheckItem = (id) => {
-    const newCheckItems = checkItems.filter((checkItem) => checkItem.id !== id);
-    setCheckItems(newCheckItems);
-    updateProgress(newCheckItems);
-  };
-
-  const handleCheckChange = (itemId, newState) => {
-    const updatedItems = checkItems.map((item) =>
-      item.id === itemId ? { ...item, state: newState } : item
-    );
-    setCheckItems(updatedItems);
-    updateProgress(updatedItems);
-  };
+  useEffect(() => {
+    updateProgress(checkItems);
+  }, [checkItems]);
 
   return (
-    <>
+    <Box
+      sx={{
+        border: "1px solid transparent",
+        backgroundColor: "#ffff",
+        borderRadius: 3,
+        mt: 2,
+        p: 2,
+      }}
+    >
       <Box
         sx={{
-          border: "1px solid transparent",
-          backgroundColor: "#ffff",
-          borderRadius: 3,
-          mt: 2,
-          p: 2,
+          display: "flex",
+          justifyContent: "space-between",
+          p: 1,
+          m: 0,
+          alignItems: "center",
         }}
       >
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "space-between",
-            p: 1,
-            m: 0,
-            alignItems: "center",
-          }}
-        >
-          <FormGroup>
-            <FormControlLabel
-              disabled
-              control={<CheckBoxIcon />}
-              label={checkList.name}
-            />
-          </FormGroup>
-          <IconButton aria-label="delete" onClick={handleDelete}>
-            <DeleteIcon />
-          </IconButton>
-        </Box>
-        <Box sx={{ width: "100%", m: 2 }}>
-          <LinearProgressWithLabel color="success" value={progress} />
-        </Box>
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-        >
-          {checkItems.map((checkItem) => (
+        <FormGroup>
+          <FormControlLabel
+            disabled
+            control={<CheckBoxIcon />}
+            label={checkList.name}
+          />
+        </FormGroup>
+        <IconButton aria-label="delete" onClick={handleDelete}>
+          <DeleteIcon />
+        </IconButton>
+      </Box>
+      <Box sx={{ width: "100%", m: 2 }}>
+        <LinearProgressWithLabel color="success" value={progress} />
+      </Box>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+      >
+        {status === "loading" ? (
+          <Box>Loading Check Items...</Box>
+        ) : checkItems.length > 0 ? (
+          checkItems.map((checkItem) => (
             <CheckItems
               key={checkItem.id}
               checkItem={checkItem}
               cardObj={cardObj}
-              handleCheckChange={handleCheckChange}
-              handleDeleteCheckItem={handleDeleteCheckItem}
             />
-          ))}
+          ))
+        ) : (
+          <Box>No Check Items Found</Box>
+        )}
 
-          <Button
-            aria-describedby={id}
-            variant="outlined"
-            onClick={handleClick}
-            sx={{ width: "80%", mt: 2, height: "5%", display: "inline-block" }}
-          >
-            Add an Item
-          </Button>
+        <Button
+          aria-describedby="simple-popover"
+          variant="outlined"
+          onClick={handleClick}
+          sx={{ width: "80%", mt: 2, height: "5%", display: "inline-block" }}
+        >
+          Add an Item
+        </Button>
 
-          <PopOver
-            id={id}
-            open={open}
-            anchorEl={anchorEl}
-            handleClose={handleClose}
-            label={"CheckItem Name"}
-            handleNew={handleCheckItem}
-            name={checkItemName}
-            handleNewInput={handleCheckItemInput}
-          />
-        </Box>
+        <PopOver
+          id="simple-popover"
+          open={Boolean(anchorEl)}
+          anchorEl={anchorEl}
+          handleClose={handleClose}
+          label="CheckItem Name"
+          handleNew={handleCheckItem}
+          name={checkItemName}
+          handleNewInput={handleCheckItemInput}
+        />
       </Box>
-    </>
+    </Box>
   );
 }
 
