@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Box, Card, Button, IconButton } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useDispatch, useSelector } from "react-redux";
@@ -9,11 +9,10 @@ import { fetchCards, addCard, removeList } from "../../store/cardsSlice";
 
 function Lists({ listInfo }) {
   const dispatch = useDispatch();
-  const { cards, status } = useSelector((state) => state.cards);
+  const { cards } = useSelector((state) => state.cards);
   const [open, setOpen] = useState(false);
   const [cardName, setCardName] = useState("");
   const [delOpen, setDelOpen] = useState(false);
-
   useEffect(() => {
     dispatch(fetchCards(listInfo.id));
   }, [dispatch, listInfo.id]);
@@ -68,12 +67,22 @@ function Lists({ listInfo }) {
           </IconButton>
         </Box>
 
-        {status === "loading" ? (
-          <Box>Loading Cards...</Box>
-        ) : cards.length > 0 ? (
-          cards.map((card) => <Cards key={card.id} cardInfo={card} />)
+        {cards[listInfo.id]?.length > 0 ? (
+          cards[listInfo.id].map((card) => (
+            <Cards key={card.id} cardInfo={card} />
+          ))
         ) : (
-          <Box>No Cards Found</Box>
+          <Box
+            sx={{
+              padding: 1,
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              height: "100%",
+            }}
+          >
+            No Cards Found
+          </Box>
         )}
 
         <Button
