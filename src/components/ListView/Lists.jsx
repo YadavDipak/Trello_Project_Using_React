@@ -1,16 +1,11 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { getCards, createCards, deleteList } from "../../services/FetchApi";
 import Cards from "../CardView/Cards";
 import DialogBox from "../DialogBox";
-import {
-  Box,
-  Card,
-  Button,
-} from "@mui/material";
+import { Box, Card, Button } from "@mui/material";
 import DeleteDialog from "../DeleteDialog";
-
 
 function Lists({ listInfo, handleListChange }) {
   const [cardsData, setCards] = useState([]);
@@ -53,7 +48,6 @@ function Lists({ listInfo, handleListChange }) {
 
   function setCardsData(id) {
     let results = cardsData.filter((cards) => cards.id !== id);
-    // console.log(results);
     setCards(results);
   }
 
@@ -71,7 +65,7 @@ function Lists({ listInfo, handleListChange }) {
           fontFamily: "sans-serif",
           m: 2,
           height: "fit-content",
-          minWidth: "20vw"
+          minWidth: "20vw",
         }}
       >
         <Box
@@ -91,6 +85,7 @@ function Lists({ listInfo, handleListChange }) {
         </Box>
 
         {cardsData.map((card) => (
+          // eslint-disable-next-line react/jsx-key
           <Cards handleCards={setCardsData} cardInfo={card} />
         ))}
 
@@ -112,8 +107,12 @@ function Lists({ listInfo, handleListChange }) {
         textChange={handleTextValue}
       />
 
-      <DeleteDialog handleclose={handleDelClose} open={delOpen} title={"  Delete List"} deleteitem={handleListDelete} />
-
+      <DeleteDialog
+        handleclose={handleDelClose}
+        open={delOpen}
+        title={"  Delete List"}
+        deleteitem={handleListDelete}
+      />
     </>
   );
 }
