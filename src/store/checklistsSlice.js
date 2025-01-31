@@ -40,7 +40,7 @@ export const removeCheckList = createAsyncThunk(
 const checklistsSlice = createSlice({
   name: "checklists",
   initialState: {
-    checklists: [],
+    checklists: {},
     status: "idle",
     error: null,
   },
