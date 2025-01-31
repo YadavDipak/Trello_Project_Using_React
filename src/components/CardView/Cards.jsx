@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import {
   Box,
   Button,
@@ -14,11 +14,9 @@ import { useDispatch, useSelector } from "react-redux";
 import CheckList from "../CheckList/CheckList";
 import PopOver from "../PopOver";
 import DeleteDialog from "../DeleteDialog";
-import {
-  fetchCheckLists,
-  addCheckList,
-  removeCard,
-} from "../../store/checklistsSlice";
+import { fetchCheckLists, addCheckList } from "../../store/checklistsSlice";
+
+import { removeCard } from "../../store/cardsSlice";
 
 function Cards({ cardInfo }) {
   const dispatch = useDispatch();
@@ -65,7 +63,7 @@ function Cards({ cardInfo }) {
   const handleDelClose = () => setDelCard(false);
 
   const handleDeleteCard = () => {
-    dispatch(removeCard(cardInfo.id));
+    dispatch(removeCard({ cardId: cardInfo.id, listId: cardInfo.idList }));
     handleDelClose();
   };
 
