@@ -32,16 +32,16 @@ export const removeList = createAsyncThunk(
 
 export const removeCard = createAsyncThunk(
   "cards/removeCard",
-  async (cardId) => {
-    const response = await deleteCard(cardId);
-    return response;
+  async ({ cardId, listId }) => {
+    await deleteCard(cardId);
+    return { listId, cardId };
   }
 );
 
 const cardsSlice = createSlice({
   name: "cards",
   initialState: {
-    cards: [],
+    cards: {},
     status: "idle",
     error: null,
   },
@@ -53,18 +53,22 @@ const cardsSlice = createSlice({
       })
       .addCase(fetchCards.fulfilled, (state, action) => {
         state.status = "succeeded";
-        state.cards = action.payload;
+        state.cards[action.payload[0]?.idList] = action.payload;
       })
       .addCase(fetchCards.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.error.message;
       })
       .addCase(addCard.fulfilled, (state, action) => {
-        state.cards.push(action.payload);
+        if (!state.cards[action.payload.idList]) {
+          state.cards[action.payload.idList] = [];
+        }
+        state.cards[action.payload.idList].push(action.payload);
       })
       .addCase(removeCard.fulfilled, (state, action) => {
-        state.cards = state.cards.filter(
-          (card) => card.id !== action.payload.id
+        const { listId, cardId } = action.payload;
+        state.cards[listId] = state.cards[listId].filter(
+          (card) => card.id !== cardId
         );
       });
   },
