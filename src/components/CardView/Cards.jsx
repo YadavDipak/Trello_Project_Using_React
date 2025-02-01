@@ -10,7 +10,11 @@ import {
 } from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import CloseIcon from "@mui/icons-material/Close";
-import { deleteCard, getCheckList, createCheckList } from "../../services/FetchApi";
+import {
+  deleteCard,
+  getCheckList,
+  createCheckList,
+} from "../../services/FetchApi";
 import CheckList from "../CheckList/CheckList";
 import PopOver from "../PopOver";
 import DeleteDialog from "../DeleteDialog";
@@ -112,14 +116,22 @@ function Cards({ cardInfo, handleCards }) {
         </IconButton>
       </Box>
 
-      <DeleteDialog handleclose={handleDelClose} open={delCard} title={"  Delete Card"} deleteitem={handleDeleteCard} />
+      <DeleteDialog
+        handleclose={handleDelClose}
+        open={delCard}
+        title={"  Delete Card"}
+        deleteitem={handleDeleteCard}
+      />
 
       <Dialog
         onClose={handleCheckListClose}
         aria-labelledby="customized-dialog-title"
         open={openChecklists}
       >
-        <DialogTitle sx={{ m: 0, p: 2, width: "38vw" }} id="customized-dialog-title">
+        <DialogTitle
+          sx={{ m: 0, p: 2, width: "38vw" }}
+          id="customized-dialog-title"
+        >
           {cardInfo.name}
         </DialogTitle>
         <IconButton
