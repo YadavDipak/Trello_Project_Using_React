@@ -1,11 +1,22 @@
-import { Dialog, DialogTitle, DialogContent, DialogActions, IconButton, Button, Typography } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import PropTypes from "prop-types";
-
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  IconButton,
+  Button,
+  Typography,
+} from "@mui/material";
 
 function DeleteDialog({ handleclose, open, title, deleteitem }) {
   return (
-    <Dialog onClose={handleclose} aria-labelledby="customized-dialog-title" open={open}>
+    <Dialog
+      onClose={handleclose}
+      aria-labelledby="customized-dialog-title"
+      open={open}
+    >
       <DialogTitle sx={{ m: 0, p: 2 }} id="customized-dialog-title">
         {title}
       </DialogTitle>
