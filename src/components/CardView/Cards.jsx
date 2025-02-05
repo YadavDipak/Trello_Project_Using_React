@@ -31,7 +31,9 @@ function Cards({ cardInfo, handleCards }) {
       .then((data) => {
         setAllCheckList(data);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        throw new Error(`Failed to fetch checklists: ${err.message}`);
+      });
   }, [cardInfo.id]);
 
   const handleClick = (event) => {
@@ -55,7 +57,9 @@ function Cards({ cardInfo, handleCards }) {
         setCheckListName("");
         handleClose();
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        throw new Error(`Failed to create checklist: ${err.message}`);
+      });
   };
 
   const open = Boolean(anchorEl);
