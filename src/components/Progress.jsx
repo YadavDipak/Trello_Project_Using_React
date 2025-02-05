@@ -1,8 +1,4 @@
-import {
-  Box,
-  Typography,
-  LinearProgress,
-} from "@mui/material";
+import { Box, Typography, LinearProgress } from "@mui/material";
 
 import PropTypes from "prop-types";
 
