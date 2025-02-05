@@ -17,8 +17,7 @@ export async function FetchApi(boardId) {
     );
     return checkStatus(response);
   } catch (error) {
-    console.error("There was an error fetching the board!", error);
-    throw error;
+    throw new Error(`There was an error fetching the board: ${error.message}`);
   }
 }
 
@@ -29,8 +28,7 @@ export async function getAllBoard() {
     );
     return checkStatus(response);
   } catch (error) {
-    console.error("There was an error fetching all boards!", error);
-    throw error;
+    throw new Error(`There was an error fetching all boards: ${error.message}`);
   }
 }
 
@@ -41,8 +39,7 @@ export async function createBoard(nameOfBoard) {
     );
     return checkStatus(response);
   } catch (error) {
-    console.error("There was an error creating the board!", error);
-    throw error;
+    throw new Error(`There was an error creating the board: ${error.message}`);
   }
 }
 
@@ -53,8 +50,7 @@ export async function getCards(listId) {
     );
     return checkStatus(response);
   } catch (error) {
-    console.error("Error getting card info:", error.message);
-    throw error;
+    throw new Error(`Error getting card info: ${error.message}`);
   }
 }
 
@@ -66,8 +62,7 @@ export async function createCards(cardName, listId) {
     );
     return checkStatus(response);
   } catch (error) {
-    console.error("There was an error creating the card!", error);
-    throw error;
+    throw new Error(`There was an error creating the card: ${error.message}`);
   }
 }
 
@@ -79,8 +74,7 @@ export async function createLists(listName, boardId) {
     );
     return checkStatus(response);
   } catch (error) {
-    console.error("Error creating the list!", error.message);
-    throw error;
+    throw new Error(`Error creating the list: ${error.message}`);
   }
 }
 
@@ -92,8 +86,7 @@ export async function deleteList(listId) {
     );
     return checkStatus(response);
   } catch (error) {
-    console.error("Error deleting the list!", error.message);
-    throw error;
+    throw new Error(`Error deleting the list: ${error.message}`);
   }
 }
 
@@ -104,8 +97,7 @@ export async function deleteCard(cardid) {
     );
     return checkStatus(response);
   } catch (error) {
-    console.error("Error deleting the card!", error.message);
-    throw error;
+    throw new Error(`Error deleting the card: ${error.message}`);
   }
 }
 
@@ -116,8 +108,7 @@ export async function getCheckList(cardId) {
     );
     return checkStatus(response);
   } catch (error) {
-    console.error("Error getting the checklist!", error.message);
-    throw error;
+    throw new Error(`Error getting the checklist: ${error.message}`);
   }
 }
 
@@ -129,8 +120,7 @@ export async function createCheckList(cardId, checkListName) {
     );
     return checkStatus(response);
   } catch (error) {
-    console.error("Error creating the checklist!", error.message);
-    throw error;
+    throw new Error(`Error creating the checklist: ${error.message}`);
   }
 }
 
@@ -141,8 +131,7 @@ export async function deleteCheckList(checkListId) {
     );
     return checkStatus(response);
   } catch (error) {
-    console.error("Error deleting the checklist!", error.message);
-    throw error;
+    throw new Error(`Error deleting the checklist: ${error.message}`);
   }
 }
 
@@ -153,8 +142,7 @@ export async function getCheckItems(checkListId) {
     );
     return checkStatus(response);
   } catch (error) {
-    console.error("Error getting the check items!", error.message);
-    throw error;
+    throw new Error(`Error getting the check items: ${error.message}`);
   }
 }
 
@@ -165,8 +153,7 @@ export async function createCheckItem(checkListId, checkItemName) {
     );
     return checkStatus(response);
   } catch (error) {
-    console.error("Error creating the check item!", error.message);
-    throw error;
+    throw new Error(`Error creating the check item: ${error.message}`);
   }
 }
 
@@ -177,8 +164,7 @@ export async function deleteCheckItem(checkListId, idCheckItem) {
     );
     return checkStatus(response);
   } catch (error) {
-    console.error("Error deleting the check item!", error.message);
-    throw error;
+    throw new Error(`Error deleting the check item: ${error.message}`);
   }
 }
 
@@ -190,7 +176,6 @@ export async function changeItemCheckbox(cardId, checkItemId, newState) {
     );
     return checkStatus(response);
   } catch (error) {
-    console.error("Error changing the checkbox state!", error.message);
-    throw error;
+    throw new Error(`Error changing the checkbox state: ${error.message}`);
   }
 }
