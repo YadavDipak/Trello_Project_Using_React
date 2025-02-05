@@ -17,14 +17,18 @@ function BoardInfo() {
       .then((data) => {
         setLists(data);
       })
-      .catch((err) => console.log("Error fetching lists:", err));
+      .catch((err) => {
+        throw new Error(`Failed to fetch lists: ${err.message}`);
+      });
 
     getAllBoard()
       .then((boards) => {
         const board = boards.find((board) => board.id === id);
         setBoardName(board.name);
       })
-      .catch((err) => console.log("Error fetching board details:", err));
+      .catch((err) => {
+        throw new Error(`Failed to fetch board details: ${err.message}`);
+      });
   }, [id]);
 
   const handleOpen = () => setOpen(true);
@@ -40,7 +44,9 @@ function BoardInfo() {
       .then((data) => {
         setLists([...lists, data]);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        throw new Error(`Failed to create list: ${err.message}`);
+      });
     handleClose();
     setListName("");
   }
