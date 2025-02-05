@@ -18,7 +18,7 @@ function Content() {
         setAllBoard(data);
       })
       .catch((err) => {
-        console.log(err);
+        throw new Error(`Failed to fetch boards: ${err.message}`);
       });
   }, []);
 
@@ -29,7 +29,7 @@ function Content() {
         setAllBoard((prevBoards) => [...prevBoards, data]);
       })
       .catch((err) => {
-        console.log(err);
+        throw new Error(`Failed to create board: ${err.message}`);
       });
 
     setBoard("");
