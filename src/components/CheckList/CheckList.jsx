@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import CheckBoxIcon from "@mui/icons-material/CheckBox";
 import {
   Button,
@@ -11,10 +11,12 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import PropTypes from "prop-types";
 import CheckItems from "../CheckItems/CheckItems";
 import PopOver from "../PopOver";
-import { deleteCheckList, getCheckItems, createCheckItem } from "../../services/FetchApi";
-import LinearProgressWithLabel from '../Progress'
-
-
+import {
+  deleteCheckList,
+  getCheckItems,
+  createCheckItem,
+} from "../../services/FetchApi";
+import LinearProgressWithLabel from "../Progress";
 
 LinearProgressWithLabel.propTypes = {
   value: PropTypes.number.isRequired,
