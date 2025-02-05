@@ -7,7 +7,6 @@ import {
   Box,
 } from "@mui/material";
 
-
 const style = {
   position: "absolute",
   top: "50%",
@@ -31,7 +30,6 @@ function DialogBox({
   title,
   textChange,
 }) {
-
   return (
     <>
       <Modal open={open} onClose={handleClose}>
