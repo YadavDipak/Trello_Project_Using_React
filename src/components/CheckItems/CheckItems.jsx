@@ -10,7 +10,6 @@ function CheckItems({
   handleDeleteCheckItem,
   cardObj,
 }) {
-
   const [checkedState, setCheckedState] = useState(null);
 
   useEffect(() => {
