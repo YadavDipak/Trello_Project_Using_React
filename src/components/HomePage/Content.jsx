@@ -1,8 +1,5 @@
 import { useState, useEffect } from "react";
-import {
-  Button,
-  Box,
-} from "@mui/material";
+import { Button, Box } from "@mui/material";
 import Boards from "./Boards";
 import { getAllBoard, createBoard } from "../../services/FetchApi";
 import DialogBox from "../DialogBox";
@@ -25,7 +22,6 @@ function Content() {
       });
   }, []);
 
-
   const handleCreateBoard = (e) => {
     e.preventDefault();
     createBoard(boardName)
@@ -46,13 +42,15 @@ function Content() {
 
   return (
     <>
-      <Box sx={{
-        display: "flex",
-        flexWrap: "wrap",
-        m: 2,
-        pt: 4,
-        fontFamily: "sans-serif",
-      }} >
+      <Box
+        sx={{
+          display: "flex",
+          flexWrap: "wrap",
+          m: 2,
+          pt: 4,
+          fontFamily: "sans-serif",
+        }}
+      >
         <Button
           onClick={handleOpen}
           variant="contained"
