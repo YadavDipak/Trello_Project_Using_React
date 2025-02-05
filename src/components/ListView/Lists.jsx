@@ -25,7 +25,9 @@ function Lists({ listInfo, handleListChange }) {
       .then((data) => {
         setCards(data);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        throw new Error(`Failed to fetch cards: ${err.message}`);
+      });
   }, [listInfo.id]);
 
   const handleCreateCard = (e) => {
@@ -36,7 +38,9 @@ function Lists({ listInfo, handleListChange }) {
         setCardName("");
         handleClose();
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        throw new Error(`Failed to create card: ${err.message}`);
+      });
   };
 
   const handleListDelete = () => {
