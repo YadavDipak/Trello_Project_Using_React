@@ -1,6 +1,22 @@
-import { Box, TextField, FormLabel, FormControl, Popover, Button } from "@mui/material";
+import {
+  Box,
+  TextField,
+  FormLabel,
+  FormControl,
+  Popover,
+  Button,
+} from "@mui/material";
 
-function PopOver({ id, open, anchorEl, handleClose, label, handleNew, name, handleNewInput }) {
+function PopOver({
+  id,
+  open,
+  anchorEl,
+  handleClose,
+  label,
+  handleNew,
+  name,
+  handleNewInput,
+}) {
   return (
     <>
       <Popover
@@ -13,9 +29,18 @@ function PopOver({ id, open, anchorEl, handleClose, label, handleNew, name, hand
           horizontal: "left",
         }}
       >
-        <Box >
-          <FormControl sx={{ width: '20vw', display: 'flex', justifyContent: 'center', textAlign: 'center' }} component="form" onSubmit={handleNew}>
-            <FormLabel sx={{ fontWeight: 'bold', pt: 3 }}>{label}</FormLabel>
+        <Box>
+          <FormControl
+            sx={{
+              width: "20vw",
+              display: "flex",
+              justifyContent: "center",
+              textAlign: "center",
+            }}
+            component="form"
+            onSubmit={handleNew}
+          >
+            <FormLabel sx={{ fontWeight: "bold", pt: 3 }}>{label}</FormLabel>
             <TextField
               type="text"
               value={name}
@@ -24,14 +49,19 @@ function PopOver({ id, open, anchorEl, handleClose, label, handleNew, name, hand
               label={label}
               sx={{ m: 2 }}
             />
-            <Button variant="contained" color="secondary" type="submit" sx={{ m: 2 }}>
+            <Button
+              variant="contained"
+              color="secondary"
+              type="submit"
+              sx={{ m: 2 }}
+            >
               Add
             </Button>
           </FormControl>
         </Box>
       </Popover>
     </>
-  )
+  );
 }
 
-export default PopOver
+export default PopOver;
