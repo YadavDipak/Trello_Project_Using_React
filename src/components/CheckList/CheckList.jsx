@@ -34,7 +34,9 @@ function CheckList({ handleCheckListDelete, checkList, cardObj }) {
         setCheckItems(data);
         updateProgress(data);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        throw new Error(`Failed to fetch checklist items: ${err.message}`);
+      });
   }, []);
 
   const handleClick = (event) => {
@@ -58,7 +60,9 @@ function CheckList({ handleCheckListDelete, checkList, cardObj }) {
         setCheckItemName("");
         handleClose();
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        throw new Error(`Failed to create checklist item: ${err.message}`);
+      });
   };
 
   const open = Boolean(anchorEl);
@@ -80,7 +84,9 @@ function CheckList({ handleCheckListDelete, checkList, cardObj }) {
       .then(() => {
         handleCheckListDelete(checkListId);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        throw new Error(`Failed to delete checklist: ${err.message}`);
+      });
   };
 
   const handleNewCheckItem = (data) => {
