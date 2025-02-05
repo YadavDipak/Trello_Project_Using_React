@@ -17,13 +17,14 @@ function CheckItems({
   }, []);
 
   function handleDelete() {
-    console.log(checkItem);
     const checkItemId = checkItem.id;
     deleteCheckItem(checkItem.idChecklist, checkItemId)
       .then(() => {
         handleDeleteCheckItem(checkItemId);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        throw new Error(`Failed to delete checkItem: ${err.message}`);
+      });
   }
 
   function handleCheckChangeLocal() {
@@ -34,7 +35,9 @@ function CheckItems({
       .then(() => {
         handleCheckChange(checkItem.id, checkState);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        throw new Error(`Failed to update checkbox state: ${err.message}`);
+      });
   }
 
   return (
