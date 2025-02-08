@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import PropTypes from "prop-types";
-import CheckItems from "../CheckItems/CheckItems";
+import CheckItems from "../checkItems/CheckItems";
 import PopOver from "../PopOver";
 import {
   deleteCheckList,
