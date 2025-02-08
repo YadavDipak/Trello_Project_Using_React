@@ -1,18 +1,21 @@
 import { Navigate, Route, Routes } from "react-router-dom";
-import Content from "./components/HomePage/Content";
+import Content from "./components/homePage/Content";
 import MainLayout from "./layout/MainLayout";
-import BoardInfo from "./components/BoardView/BoardInfo";
+import BoardInfo from "./components/boardView/BoardInfo";
+import SetErrorBoundary from "./components/ErrorBoundary";
 
 function App() {
   return (
     <>
-      <Routes>
-        <Route path="/" element={<Navigate to="/boards" />} />
-        <Route path="/" element={<MainLayout />}>
-          <Route path="/boards" element={<Content />} />
-          <Route path="/boards/:id" element={<BoardInfo />}></Route>
-        </Route>
-      </Routes>
+      <SetErrorBoundary>
+        <Routes>
+          <Route path="/" element={<Navigate to="/boards" />} />
+          <Route path="/" element={<MainLayout />}>
+            <Route path="/boards" element={<Content />} />
+            <Route path="/boards/:id" element={<BoardInfo />}></Route>
+          </Route>
+        </Routes>
+      </SetErrorBoundary>
     </>
   );
 }
