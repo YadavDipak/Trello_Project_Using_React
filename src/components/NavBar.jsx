@@ -1,13 +1,13 @@
 import { AppBar, Toolbar, Typography, Button, Box } from "@mui/material";
 import { Link } from "react-router-dom";
-import { Trello } from "lucide-react";
+import DashboardIcon from "@mui/icons-material/Dashboard";
 
 function Nav() {
   return (
     <AppBar position="static">
       <Toolbar>
         <Box sx={{ display: "flex", alignItems: "center" }}>
-          <Trello className="h-8 w-8" />
+          <DashboardIcon sx={{ fontSize: 32 }} />
           <Typography variant="h6" sx={{ fontWeight: "bold", ml: 1 }}>
             Trello
           </Typography>
