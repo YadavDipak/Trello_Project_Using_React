@@ -15,7 +15,7 @@ import {
   getCheckList,
   createCheckList,
 } from "../../services/FetchApi";
-import CheckList from "../CheckList/CheckList";
+import CheckList from "../checkList/CheckList";
 import PopOver from "../PopOver";
 import DeleteDialog from "../DeleteDialog";
 
