@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { Box, Button } from "@mui/material";
 import { getAllBoard, createLists, FetchApi } from "../../services/FetchApi";
-import Lists from "../ListView/Lists";
+import Lists from "../listView/Lists";
 import DialogBox from "../DialogBox";
 
 function BoardInfo() {
